@@ -3,7 +3,8 @@
 # date: 2020-05-04
 
 import xlrd
-import csv
+import csv,re
+
 
 def match_tumor_con():
     tumor_con_dict = {}
@@ -21,17 +22,17 @@ def match_tumor_con():
         for m in range(1,n_rows):
             c_type = data.cell(m,0).ctype
             if c_type == 2 and data.cell(m,0).value % 1 == 0:
-                tumor_con_dict[int(data.cell(m,0).value)] = data.cell(m,4).value
+                tumor_con_dict[int(data.cell(m,0).value)] = "".join(re.findall(r"\d+\.*\d*%$",str(data.cell(m,4).value)))
                 if data.cell(m,4).value == "":
                     csv_writer.writerow({"SampleID":int(data.cell(m,0).value),"Tumor_Con":"-"})
                 else:
-                    csv_writer.writerow({"SampleID":data.cell(m,0).value,"Tumor_Con":data.cell(m,4).value})
+                    csv_writer.writerow({"SampleID":data.cell(m,0).value,"Tumor_Con":"".join(re.findall(r"\d+\.*\d*%$",str(data.cell(m,4).value)))})
             else:
-                tumor_con_dict[data.cell(m, 0).value] = data.cell(m, 4).value
+                tumor_con_dict[data.cell(m, 0).value] = "".join(re.findall(r"\d+\.*\d*%$",str(data.cell(m,4).value)))
                 if data.cell(m, 4).value == "":
                     csv_writer.writerow({"SampleID": data.cell(m, 0).value, "Tumor_Con": "-"})
                 else:
-                    csv_writer.writerow({"SampleID": data.cell(m, 0).value, "Tumor_Con": data.cell(m, 4).value})
+                    csv_writer.writerow({"SampleID": data.cell(m, 0).value, "Tumor_Con": "".join(re.findall(r"\d+\.*\d*%$",str(data.cell(m,4).value)))})
 
 
     with open(r"E:\厦维生物\99_Sample_Datainfo\18_19_mutation_add_tumor_con.csv","w",newline="") as match_file:
