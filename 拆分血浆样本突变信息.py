@@ -1,16 +1,22 @@
 # _*_ coding=utf-8 _*_
 # author: xingchaowu
 
+
+"""
+初期版本
+从汇总样本突变信息表中提取10基因Panel血浆样本检出信息以及样本及突变总数统计
+"""
+
 PosNum = 0
 NegNum = 0
 genelist = []
 samplelist = []
 
+# 
 with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇总\20200814.csv","r") as infile:
     with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇总\10基因adddiagnosis.txt","w") as outfile:
         outfile.write("#sample_num\tlib_num\tproject\tmutation_gene\tmutation_site\tmutation_frequency\tmutation_type\tPathological_diagnosis\n")
-        for line in infile:
-            # if ("P" in line.strip().split(",")[1] and "EP" not in line.strip().split(",")[1]) and ("10" in line.strip().split(",")[2] and "组织" not in line.strip().split(",")[2]):
+        for line in infile：
             if ("P" in line.strip().split(",")[1] and "EP" not in line.strip().split(",")[1]) and ("10" in line.strip().split(",")[2] and "组织" not in line.strip().split(",")[2]):
                 samplelist.append(line.strip().split(",")[0])
                 genelist.append(line.strip().split(",")[3])
@@ -27,10 +33,7 @@ with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇
 print("参与统计的血浆阳性样本总数:%s"%len(set(samplelist)))
 print("参与统计的血浆阳性样本总数:%s"%PosNum)
 print("参与统计的血浆阴性样本总数:%s"%NegNum)
-
 print("血浆样本已检测到基因类型：%s"%set(genelist))
-
-
 
 
 with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇总\10基因.txt", "r") as infile:
@@ -39,6 +42,7 @@ with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇
             genelist.append(line.strip().split("\t")[3])
     print(set(genelist))
 
+  
 EGFR = []
 HIP1_ALK = []
 TRIM24_RET = []
@@ -61,8 +65,6 @@ EZR_ROS1 = []
 PIK3CA = []
 CDK4 = []
 ROS1 = []
-
-
 
 with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇总\10基因.txt", "r") as infile:
     for line in infile:
@@ -107,7 +109,6 @@ with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇
                 PIK3CA.append(line.strip().split("\t")[0])
             elif line.strip().split("\t")[3] == "CCDC6-RET":
                 CCDC6_RET.append(line.strip().split("\t")[0])
-
             elif line.strip().split("\t")[3] == "NRAS":
                 NRAS.append(line.strip().split("\t")[0])
             elif line.strip().split("\t")[3] == "ROS1":
