@@ -2,7 +2,8 @@
 # author: Xingchao Wu
 # date: 2020-06-13
 
-"""根据原始样本对应的突变信息从数据分析文件中提取检出结果，如：
+"""
+根据原始样本对应的突变信息从数据分析文件中提取检出结果，如：
 原始样本LC-BR3对应的突变信息如下：
 NM_000245.2:exon14_intron14:c.3028_3028+16del17:p.?
 NM_005228.3:exon20:c.2290_2291ins12:p.A763_Y764insFQEA
@@ -16,7 +17,8 @@ import pandas as pd
 
 # 根据样本对应突变list生成样本和突变的字典
 def generate_sample_dict(work_path,mutation_dict):
-    list_file = open(r"%s\list.txt"%work_path,"r")
+    sample_type = input("请输入要提取信息样本类型(tissue or plasma):")  # 修改于2020-09-07
+    list_file = open(r"%s\%s.txt"%(work_path,sample_type),"r")
     for line in list_file:
         s_key = line.strip().split("\t")[0]
         s_value = line.strip().split("\t")[1]
