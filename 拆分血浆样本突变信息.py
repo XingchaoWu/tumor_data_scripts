@@ -12,7 +12,7 @@ NegNum = 0
 genelist = []
 samplelist = []
 
-# 
+# 提取10基因血浆样本信息（阳性样本），信息包括样本编号、文库编号、检测项目、突变基因、突变位点信息、突变频率、突变类型、病理诊断信息
 with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇总\20200814.csv","r") as infile:
     with open(r"E:\厦维生物\汇总结果\检验所2018-2019临检样本信息汇总\10基因adddiagnosis.txt","w") as outfile:
         outfile.write("#sample_num\tlib_num\tproject\tmutation_gene\tmutation_site\tmutation_frequency\tmutation_type\tPathological_diagnosis\n")
