@@ -5,7 +5,7 @@
 import xlrd
 import csv
 import pandas as pd
-
+ 
 def extract_info_from_sample_table():
     data = xlrd.open_workbook("E:\厦维生物\99_临检样本信息及数据统计\临检样本接收表\\2020年接收表08.05.xlsx")
     table = data.sheet_by_index(0)
