@@ -31,4 +31,4 @@ def csv2xlsx():
 
 if __name__ == '__main__':
     extract_info_from_sample_table()
-    csv2xlsx()
+    csv2xlsx() 
