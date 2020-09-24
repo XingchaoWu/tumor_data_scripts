@@ -60,10 +60,14 @@ def Extract_CNV_Info(work_path,data_xlxs_name,mutation_dict):
                                         "Gene": data_sheet.cell(n,3).value,
                                         "CopyNum": data_sheet.cell(n, 4).value,})
 # formate csv transform xlsx
-def csv2xls(work_path,data_xlxs_name):
-    for t in ["SNVIndel","CNV"]:
-        csv_file = pd.read_csv(r"%s\%s_%s_filter.csv"%(work_path,data_xlxs_name,t),encoding="utf-8",index_col=0,engine='python')
-        csv_file.to_excel(r"%s\%s_%s_filter.xlsx"%(work_path,data_xlxs_name,t),sheet_name="{}".format(t))
+def csv2xls(sample_type，work_path,data_xlxs_name):
+    if sample_type == "tissue":
+        for t in ["SNVIndel","CNV"]:
+            csv_file = pd.read_csv(r"%s\%s_%s_filter.csv"%(work_path,data_xlxs_name,t),encoding="utf-8",index_col=0,engine='python')
+            csv_file.to_excel(r"%s\%s_%s_filter.xlsx"%(work_path,data_xlxs_name,t),sheet_name="{}".format(t))
+    else:
+        csv_file = pd.read_csv(r"%s\%s_SNVIndel_filter.csv" % (work_path, data_xlxs_name), encoding="utf-8", index_col=0, engine='python')
+        csv_file.to_excel(r"%s\%s_SNVIndel_filter.xlsx" % (work_path, data_xlxs_name), sheet_name="SNVIndel")
 
 
 if __name__ == '__main__':
@@ -77,4 +81,4 @@ if __name__ == '__main__':
         Extract_CNV_Info(work_path,data_xlxs_name,mutation_dict)
     else:
         Extract_SnvAndIndel_Info(work_path, data_xlxs_name, mutation_dict)
-    csv2xls(work_path, data_xlxs_name)
+    csv2xls(sample_type,work_path, data_xlxs_name)
