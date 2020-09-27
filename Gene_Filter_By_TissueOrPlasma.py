@@ -5,7 +5,6 @@
 """
 extract fusion mutation
 """
-import csv
 import xlwt
 
 # filter sample info (tissue or plasma)
@@ -27,7 +26,9 @@ def  sample_filter(work_path,sample_type):
         for line in total_data_file:
             file_filter.write(line)
             sample_list.append(line.strip().split(",")[1])
-    statistics_file.write("Total {} sample : {}\n".format(sample_type,len(set(sample_list))))
+    # statistics_file.write("Total {} sample : {}\n".format(sample_type,len(set(sample_list))))
+    statistics_file.write(0,0,"Total {} sample : ".format(sample_type))
+    statistics_file.write(0,1,"{}".format(len(set(sample_list))))
 
 
 def fusion_filter_by_gene(work_path,sample_type,gene_name):
@@ -44,10 +45,20 @@ def fusion_filter_by_gene(work_path,sample_type,gene_name):
                         gene_dict.get(ros_key).append(ros_value)
                     else:
                         gene_dict.setdefault(ros_key, []).append(ros_value)
-    statistics_file.write("{}检出样本数\t{}\n".format(gene_name,len(set(gene_list))))
-    statistics_file.write("#Mutation_Site\tSample_Stat\tSample_Num\n")
+    # statistics_file.write("{}检出样本数\t{}\n".format(gene_name,len(set(gene_list))))
+    statistics_file.write(1,0,"{}检出样本数".format(gene_name))
+    statistics_file.write(1,1,"{}".format(len(set(gene_list))))
+    # statistics_file.write("#Mutation_Site\tSample_Stat\tSample_Num\n")
+    statistics_file.write(2,0,"#Mutation_Site")
+    statistics_file.write(2,1,"Sample_Stat")
+    statistics_file.write(2,2,"Sample_Num")
+    i = 3
     for r_k, r_v in gene_dict.items():
-        statistics_file.write("{}\t{}\t{}\n".format(r_k, len(r_v), ",".join(r_v)))
+        # statistics_file.write("{}\t{}\t{}\n".format(r_k, len(r_v), ",".join(r_v)))
+        statistics_file.write(i,0,"{}".format(r_k))
+        statistics_file.write(i,1,"{}".format(len(r_v)))
+        statistics_file.write(i,2,"{}".format(",".join(r_v)))
+        i += 1
 
 def SNVIndel_filter_by_gene(work_path,sample_type,gene_name):
     gene_dict = {}
@@ -73,11 +84,13 @@ if __name__ == '__main__':
     sample_type = input("Input sample type for filtering (tissue/plasma/all):")
     mutation_type = input("Input mutation type(fusion or SnvIndel):")
     gene_name = input("Input gene name:")
-    statistics_file = open(r"{}\tissue_{}_stat.txt".format(work_path,gene_name), "w")
-    # statistics_file_book = xlwt.Workbook(r"{}\tissue_{}_stat.txt".format(work_path,gene_name), "w")
-    # statistics_file = statistics_file_book.active_sheet("{}".format(gene_name))
+    # statistics_file = open(r"{}\tissue_{}_stat.txt".format(work_path,gene_name), "w")
+    statistics_file_book = xlwt.Workbook(encoding="UTF-8")
+    statistics_file = statistics_file_book.add_sheet("{}".format(gene_name))
     sample_filter(work_path,sample_type)
     if mutation_type == "fusion":
         fusion_filter_by_gene(work_path,sample_type,gene_name)
+        statistics_file_book.save(r"{}\tissue_{}_stat.xlsx".format(work_path,gene_name))
     else:
         SNVIndel_filter_by_gene(work_path,sample_type,gene_name)
+        statistics_file_book.save(r"{}\tissue_{}_stat.xlsx".format(work_path, gene_name))
